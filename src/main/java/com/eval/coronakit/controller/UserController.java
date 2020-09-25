@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,14 +27,11 @@ import com.eval.coronakit.service.KitDetailService;
 import com.eval.coronakit.service.ProductService;
 
 @Controller
-@SessionAttributes("cart")
+
 @RequestMapping("/user")
 public class UserController {
-
-	@ModelAttribute("cart")
-	public HashMap<Integer, KitDetail> getCart() {
-		return new HashMap<Integer, KitDetail>();
-	}
+	@Autowired
+	HttpSession session;
 
 	@Autowired
 	ProductService productService;
@@ -55,7 +54,14 @@ public class UserController {
 	}
 
 	@RequestMapping("/add-to-cart/{productId}")
-	public String showKit(@PathVariable("productId") int productId, @ModelAttribute("cart") HashMap<Integer, KitDetail> cart) {
+	public String showKit(@PathVariable("productId") int productId) {
+		@SuppressWarnings("unchecked")
+		Map<Integer, KitDetail> cart = (Map<Integer, KitDetail>) session.getAttribute("cart");
+		if (null == cart) {
+			cart = new HashMap<Integer, KitDetail>();
+			session.setAttribute("cart", cart);
+		}
+
 		if (cart.containsKey(productId)) {
 			KitDetail kitDtls = cart.get(productId);
 			int newQty = kitDtls.getQuantity() + 1;
@@ -72,17 +78,25 @@ public class UserController {
 	}
 
 	@RequestMapping("/show-kit")
-	public String showKit(Model model, @ModelAttribute("cart") HashMap<Integer, KitDetail> cart) {
-		List<ProductMaster> selectedProducts = new ArrayList<ProductMaster>();
-		cart.forEach((k, v) -> selectedProducts.add(productService.getProductById(k)));
-		model.addAttribute("products", selectedProducts);
+	public String showKit(Model model) {
+		@SuppressWarnings("unchecked")
+		Map<Integer, KitDetail> cart = (Map<Integer, KitDetail>) session.getAttribute("cart");
+		if (null != cart) {
+			List<ProductMaster> selectedProducts = new ArrayList<ProductMaster>();
+			cart.forEach((k, v) -> selectedProducts.add(productService.getProductById(k)));
+			model.addAttribute("products", selectedProducts);
+		}
 		return "show-cart";
 	}
 
 	@RequestMapping("/delete/{itemId}")
-	public String deleteItem(@PathVariable("itemId") int itemId, @ModelAttribute("cart") HashMap<Integer, KitDetail> cart) {
-		if (cart.containsKey(itemId)) {
-			cart.remove(itemId);
+	public String deleteItem(@PathVariable("itemId") int itemId) {
+		@SuppressWarnings("unchecked")
+		Map<Integer, KitDetail> cart = (Map<Integer, KitDetail>) session.getAttribute("cart");
+		if (null != cart) {
+			if (cart.containsKey(itemId)) {
+				cart.remove(itemId);
+			}
 		}
 		return "redirect:/user/show-kit";
 	}
@@ -94,27 +108,32 @@ public class UserController {
 
 	@RequestMapping(value = "/finalize")
 	public String finalizeOrder(@RequestParam("address") String address, Model model) {
-		HashMap<Integer, KitDetail> cart = (HashMap<Integer, KitDetail>) model.getAttribute("cart");
-		int totalAmt = 0;
-		for (KitDetail kit : cart.values()) {
-			totalAmt += kit.getAmount();
+		@SuppressWarnings("unchecked")
+		HashMap<Integer, KitDetail> cart = (HashMap<Integer, KitDetail>) session.getAttribute("cart");
+		if (null != cart) {
+			int totalAmt = 0;
+			for (KitDetail kit : cart.values()) {
+				totalAmt += kit.getAmount();
+			}
+			CoronaKit cKit = new CoronaKit();
+			cKit.setDeliveryAddress(address);
+			cKit.setOrderDate(LocalDateTime.now().toString());
+			cKit.setTotalAmount(totalAmt);
+			cKit = coronaKitService.saveKit(cKit);
+			for (KitDetail kit : cart.values()) {
+				kit.setCoronaKitId(cKit.getId());
+				kitDetailService.addKitItem(kit);
+			}
+			model.addAttribute("address", address);
+			model.addAttribute("totalAmount", totalAmt);
+
+			List<ProductMaster> selectedProducts = new ArrayList<ProductMaster>();
+			cart.forEach((k, v) -> selectedProducts.add(productService.getProductById(k)));
+			model.addAttribute("orderedproducts", selectedProducts);
+			model.addAttribute("orderDetils", cart);
+			model.addAttribute("cart", null);
+			session.removeAttribute("cart");
 		}
-		CoronaKit cKit = new CoronaKit();
-		cKit.setDeliveryAddress(address);
-		cKit.setOrderDate(LocalDateTime.now().toString());
-		cKit.setTotalAmount(totalAmt);
-		cKit = coronaKitService.saveKit(cKit);
-		for (KitDetail kit : cart.values()) {
-			kit.setCoronaKitId(cKit.getId());
-			kitDetailService.addKitItem(kit);
-		}
-		model.addAttribute("address", address);
-		model.addAttribute("totalAmount",totalAmt);
-		
-		List<ProductMaster> selectedProducts = new ArrayList<ProductMaster>();
-		cart.forEach((k, v) -> selectedProducts.add(productService.getProductById(k)));
-		model.addAttribute("products", selectedProducts);
-		
 		return "show-summary";
 	}
 

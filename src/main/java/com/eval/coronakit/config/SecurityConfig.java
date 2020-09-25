@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin().loginPage("/validate").usernameParameter("username").passwordParameter("password")
 		.failureUrl("/custom-error").defaultSuccessUrl("/home");
 		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/");
-		http.exceptionHandling().accessDeniedPage("/accessdenied");
+		http.exceptionHandling().accessDeniedPage("/custom-error");
 		
 		http.csrf().disable();
 		http.headers().frameOptions().disable();

@@ -14,20 +14,16 @@ public class LoginController {
 	public String login() {
 		String view ="login-form";
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(!(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated())
-			view ="home";
-		
-		return "login-form";
+		System.err.println(auth.getAuthorities());
+		if(!(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated()) {			
+			view ="redirect:/home";
+		}
+		return view;
 	}
 	
 	@RequestMapping("/custom-error")
 	public String error() {
 		return "error-page";
 	}
-	@RequestMapping("/accessdenied")
-	public String accessdenied() {
-		return "accessdenied-page";
-	}
-	
 	
 }

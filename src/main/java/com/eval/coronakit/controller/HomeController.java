@@ -22,6 +22,10 @@ public class HomeController {
 	
 	@RequestMapping("/home")
 	public String home() {
-		return  "main-menu";
+		String view ="redirect:custom-login";
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(!(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated())
+			view ="main-menu";		
+		return view;
 	}
 }
