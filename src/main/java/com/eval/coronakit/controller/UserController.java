@@ -55,6 +55,7 @@ public class UserController {
 
 	@RequestMapping("/add-to-cart/{productId}")
 	public String showKit(@PathVariable("productId") int productId) {
+		String view = "redirect:/user/show-kit";
 		@SuppressWarnings("unchecked")
 		Map<Integer, KitDetail> cart = (Map<Integer, KitDetail>) session.getAttribute("cart");
 		if (null == cart) {
@@ -68,11 +69,16 @@ public class UserController {
 			kitDtls.setQuantity(newQty);
 			kitDtls.setAmount(productService.getProductById(productId).getCost() * newQty);
 		} else {
-			KitDetail kitDtls = new KitDetail();
-			kitDtls.setProductId(productId);
-			kitDtls.setQuantity(1);
-			kitDtls.setAmount(productService.getProductById(productId).getCost());
-			cart.put(productId, kitDtls);
+			ProductMaster product = productService.getProductById(productId);
+			if (null != product) {
+				KitDetail kitDtls = new KitDetail();
+				kitDtls.setProductId(productId);
+				kitDtls.setQuantity(1);
+				kitDtls.setAmount(product.getCost());
+				cart.put(productId, kitDtls);
+			}else {
+				view = "redirect:/custom-error";
+			}
 		}
 		return "redirect:/user/show-kit";
 	}
