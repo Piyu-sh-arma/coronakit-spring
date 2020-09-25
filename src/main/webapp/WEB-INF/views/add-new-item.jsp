@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,22 +8,34 @@
 <title>Corona Kit-Add New Product</title>
 </head>
 <body>
-	<h1 align="center" style="font: normal; font-size: 30px; color: blue;">Add Product</h1>
-	 <div align="center">
+  <h1 align="center" style="font: normal; color: blue;">Add Product</h1>
+  <div align="center">
     <div align="left" style="display: inline-block; border: thin solid black; padding: 10px;">
-      <form action="admin?action=insertproduct" method="post">
-        <label style="display: table-cell;">Product Id:</label>
-        <input type="text" maxlength="10" name="productId" type="number" readonly value="${productId }" /> <br> <br>
-        <label style="display: table-cell;">Name:</label>
-        <input type="text" name="productName" required maxlength="50" pattern="^[a-zA-Z]+[a-zA-Z ]*"
-          oninvalid="setCustomValidity('Please enter on alphabets only. ')" /><br> <br>
-        <label style="display: table-cell;">Cost:</label> <input type="number" step="0.01" min="0.01"
-          name="productPrice" required /><br><br>
-        <label style="display: table-cell;">Description:</label> <input type="text" name="productDescription"
-          maxlength="100" /><br> <br>
+      <form:form action="${pageContext.request.contextPath}/admin/product-save" method="post" modelAttribute="product">
+        <!-- <div>
+          <form:label path="id">Product Id:</form:label>
+          <form:input type="number" path="id"/>
+          <form:errors path="id"/>
+        </div> --> 
+        <div>
+          <form:label path="productName">Name:</form:label>
+          <form:input type="text" path="productName" required="required" maxlength="50" />
+          <form:errors path="productName"/>
+        </div>
+        <div>
+          <form:label path="cost">Cost:</form:label>
+          <form:input type="number" path="cost" step="1" min="1" required="required" />
+          <form:errors path="cost"/>
+        </div>
+        <div>
+          <form:label path="productDescription">Description:</form:label>
+          <form:input type="text" path="productDescription" maxlength="100" />
+          <form:errors path="productDescription"/>
+        </div>
         <button>Add</button>
         <br>
-      </form>
+      </form:form>
     </div>
+  </div>
 </body>
 </html>

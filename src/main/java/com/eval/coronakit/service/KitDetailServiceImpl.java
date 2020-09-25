@@ -16,20 +16,19 @@ public class KitDetailServiceImpl implements KitDetailService {
 	
 	@Override
 	public KitDetail addKitItem(KitDetail kitItem) {
-		// TODO Auto-generated method stub
+		if(null!=kitItem)
+			repository.save(kitItem);
 		return null;
 	}
 
 	@Override
-	public KitDetail getKitItemById(int itemId) {
-		// TODO Auto-generated method stub
-		return null;
+	public KitDetail getKitItemById(int itemId) {		
+		return repository.getOne(itemId);
 	}
 
 	@Override
-	public List<KitDetail> getAllKitItemsOfAKit(int kitId) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<KitDetail> getAllKitItemsOfAKit(int kitId) {		
+		return repository.findAll();
 	}
 
 }

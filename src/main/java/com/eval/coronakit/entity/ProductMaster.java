@@ -16,23 +16,24 @@ import javax.validation.constraints.Size;
 public class ProductMaster {
 
 	@Id
-//	@NotNull(message = "Product Id is required.")
-//	@Min(value = 1, message = "Product Id can't be 0 or negative.")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column(name = "pname")
-	@NotNull(message = "Product Name is required.")
-	@NotBlank(message = "Product Name can't be blank.")
-	@Size(min = 5, max = 40, message = "Product Name should be 5 to 40 Chars ni length")
+	@NotNull(message = "Name is required.")
+	@NotBlank(message = "Name can't be blank.")
+	@Size(min = 2, max = 40, message = "Name should be 5 to 40 Chars in length")
 	private String productName;
 
 	@Column(name = "cost")
-	@NotNull(message = "Product Cost is required.")
-	@Min(value = 1, message = "Product cost can't be 0 or negative")
+	@NotNull(message = "Cost is required.")
+	@Min(value = 1, message = "cost can't be 0 or negative")
 	private Integer cost;
 
 	@Column(name = "description")
+	@NotNull(message = "Description is required.")
+	@NotBlank(message = "Description can't be blank.")
+	@Size(min = 5, max = 40, message = "Description should be 5 to 40 Chars in length")
 	private String productDescription;
 
 	public ProductMaster() {

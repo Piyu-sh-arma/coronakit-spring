@@ -33,13 +33,12 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	@Transactional
 	public ProductMaster deleteProduct(int productId) {
-		ProductMaster product = repository.getOne(productId);
+//		ProductMaster product = repository.getOne(productId);
 		repository.deleteById(productId);
-		return product;
+		return null;
 	}
 
-	@Override
-	@Transactional
+	@Override	
 	public ProductMaster getProductById(int productId) {
 		return repository.getOne(productId);
 	}

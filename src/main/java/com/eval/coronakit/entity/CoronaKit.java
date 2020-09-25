@@ -1,5 +1,6 @@
 package com.eval.coronakit.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,8 +12,14 @@ public class CoronaKit {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
+	@Column(name = "address")
 	private String deliveryAddress;
+	
+	@Column(name = "orderdate")
 	private String orderDate;
+	
+	@Column(name = "amount")
 	private int totalAmount;
 	public CoronaKit() {
 		// TODO Auto-generated constructor stub
