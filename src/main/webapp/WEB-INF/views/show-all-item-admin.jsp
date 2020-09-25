@@ -17,9 +17,10 @@
 <body>	
 	<jsp:include page="header.jsp" />	
 	<ul class="nav nav-pills ">
-		<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/home">Home</a></li>
-		<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/product-entry">Add Product</a></li>
+		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/admin/home">Home</a></li>
+		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/admin/product-entry">Add Product</a></li>
 	</ul>
+	
 	<h1 align="center"	style="font: normal; font-size: 30px; color: blue;">All Products</h1>
 	<c:choose>
 		<c:when test="${products==null || products.isEmpty() }">

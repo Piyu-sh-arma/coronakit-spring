@@ -22,7 +22,7 @@
 	<jsp:include page="header.jsp" />
 	<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
 		<security:authorize access="hasRole('ADMIN')">
-			<a class="nav-link" href="${pageContext.request.contextPath}/admin/home">Home</a>
+			<a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/admin/home">Home</a>
 		</security:authorize>
 	</nav>
 	<div style="padding-left: 30px">

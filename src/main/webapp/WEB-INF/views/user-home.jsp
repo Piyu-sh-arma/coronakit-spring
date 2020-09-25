@@ -13,16 +13,20 @@
 
 </head>
 <body>
+	<h2>Home!</h2>
+	<hr>
 	<jsp:include page="header.jsp" />
 	<nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-		<security:authorize access="hasRole('ADMIN')">
-			<a class="nav-link" href="${pageContext.request.contextPath}/admin/home">Home</a>
+		<security:authorize access="hasRole('USER')">
+			<a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/admin/home">Home</a>
 		</security:authorize>
 	</nav>
-	<h1>Select an option</h1>
-	<ul>
-		<li><a href="${pageContext.request.contextPath}/user/show-list">View & Add Products</a></li>
-		<li><a href="${pageContext.request.contextPath}/user/show-kit">Show Kit</a></li>
-	</ul>
+	<div style="padding-left: 30px">
+		<h3>Select an option</h3>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/user/show-list">View & Add Products</a></li>
+			<li><a href="${pageContext.request.contextPath}/user/show-kit">Show Kit</a></li>
+		</ul>
+	</div>
 </body>
 </html>

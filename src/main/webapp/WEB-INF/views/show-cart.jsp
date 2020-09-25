@@ -13,26 +13,29 @@
 
 </head>
 <body>
-	<a href="${pageContext.request.contextPath}/user/show-list">Add Products</a>
-	<hr />
+	<jsp:include page="header.jsp" />	
+	<ul class="nav nav-pills ">
+		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/user/home">Home</a></li>
+		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/user/show-list">Add Products</a></li>
+	</ul>
 
 	<h1 align="center" style="font: normal; font-size: 20px; color: blue;">Cart Summary</h1>
 	<c:choose>
 		<c:when test="${products==null || products.isEmpty() }">
-			<p style="font: normal; font-size: 30px; color: red;">No products found!!</p>
+			<div align="center" style="font: normal; font-size: 20px; color: red;">No products found. Add some products to the cart!!</div>
 		</c:when>
 		<c:otherwise>
 			<div align="center">
 				<div style="display: inline-block; border: thin solid black; padding: 10px;">
-						<table border="1" cellspacing="5px" cellpadding="5px">
+						<table class="table table-bordered">
 							<thead>
 								<tr style="color: brown; font-weight: bold">
-									<td>Name</td>
-									<td>Description</td>
-									<td>Unit Price</td>
-									<td>Quantity</td>
-									<td>Total</td>
-									<td></td>
+									<th scope="col">Name</th>
+									<th scope="col">Description</th>
+									<th scope="col">Unit Price</th>
+									<th scope="col">Quantity</th>
+									<th scope="col">Total</th>
+									<th scope="col"></th>
 								</tr>
 							</thead>
 							<tbody>
@@ -57,7 +60,7 @@
 							</tbody>
 						</table>
 						<br>
-					<a href="${pageContext.request.contextPath}/user/checkout">Checkout</a>
+					<a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/user/checkout">Checkout</a>
 				</div>
 			</div>
 		</c:otherwise>
