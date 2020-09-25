@@ -17,8 +17,8 @@
 	<jsp:include page="header.jsp" />	
 	<ul class="nav nav-pills ">
 		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/user/home">Home</a></li>
+		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/user/show-kit">Show Kit</a></li>
 		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/user/show-list">Add Products</a></li>
-		<li class="nav-item"><a class="btn btn-outline-primary btn-sm m-1" href="${pageContext.request.contextPath}/admin/product-list">View Products</a></li>
 	</ul>
 	<div align="center">
 	<h1 align="center" style="font: normal; font-size: 20px; color: blue;">Provide Address</h1>
